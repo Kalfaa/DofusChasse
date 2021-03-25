@@ -1,21 +1,16 @@
-import json
 from tkinter import *
 from tkinter.ttk import Treeview
 
 import cv2 as cv
-import numpy as np
-import pyautogui as pyautogui
 import pytesseract
-import requests
+from pynput import keyboard
 
-from game.GameState import GameState
-from game.Line import Line
-from game.board import Board
-from game.gamewatcher import GameWatcher
+from board import Board
+
 global game
 def setup():
     pytesseract.pytesseract.tesseract_cmd = r'F:\Tesseract-OCR\tesseract.exe'
-    board = [cv.imread('../img/board.png', cv.COLOR_RGB2BGR),cv.imread('../img/LittleSizeBoard.png', cv.COLOR_RGB2BGR),cv.imread('../img/1HintBoard.png', cv.COLOR_RGB2BGR),cv.imread('../img/5HintBoard.png', cv.COLOR_RGB2BGR),cv.imread('../img/2Hint.png', cv.COLOR_RGB2BGR)]
+    board = [cv.imread('../img/board.png', cv.COLOR_RGB2BGR),cv.imread('../img/LittleSizeBoard.png', cv.COLOR_RGB2BGR),cv.imread('../img/1HintBoard.png', cv.COLOR_RGB2BGR),cv.imread('../img/5HintBoard.png', cv.COLOR_RGB2BGR),cv.imread('../img/2Hint.png', cv.COLOR_RGB2BGR),cv.imread('../img/3Hint.png', cv.COLOR_RGB2BGR)]
     return board
 
 def init_board():
@@ -32,6 +27,8 @@ while 1:
     break
 root = Tk()
 root.geometry('1000x600')
+
+
 
 b = Button(root,text="Zango",command=init_board)
 
@@ -50,21 +47,41 @@ def change_pos():
             return
 
 
-c = Button(root,text="POS",command=change_pos)
+def getpos():
+    global board
+    pos=board.old_find_pos()
+    X.set(pos[0])
+    Y.set(pos[1])
+
+
+c = Button(root,text="POS",command=getpos)
 c.pack(side=RIGHT)
 
-def next_step():
-    global board
-    if X.get()!= '' and Y.get()!= '':
+
+def setpos():
+        global board
         try:
             x = int(X.get())
             y = int(Y.get())
-            board.next_step(x, y)
+            board.pos = (x,y)
             X2.delete(0, END)
             Y2.delete(0, END)
         except Exception:
             print("Wrong pos")
             return
+
+
+d = Button(root,text="BROKEN",command=setpos)
+d.pack(side=LEFT)
+
+def next_step():
+    global board
+    if X.get()!= '' and Y.get()!= '':
+            x = int(X.get())
+            y = int(Y.get())
+            board.next_step(x, y)
+            X2.delete(0, END)
+            Y2.delete(0, END)
     else:
         board.next_step()
     X2.delete(0, END)
@@ -98,4 +115,13 @@ tableau['show'] = 'headings' # sans ceci, il y avait une colonne vide à gauche 
 tableau.pack(padx = 10, pady = (0, 10))
 
 
-root.mainloop()
+def on_key_release(key):
+    if str(key) == "Key.page_up":
+        ##try:
+            next_step()
+        ##except Exception as e:
+            ##print(e)
+
+with keyboard.Listener(on_release = on_key_release) as listener:
+    root.mainloop()
+    listener.join()

@@ -1,9 +1,10 @@
+import win32gui
+
 import cv2 as cv
 import numpy as np
 from PIL import ImageGrab
-import win32gui
-#TODO L ET H CHANGE EN FONCTION DE LA TAILE DE LA POSITION DOFUS
-from game.cvutil import CvUtil
+
+from cvutil import CvUtil
 
 POSITION_TUPLE_X_Y = (0,68)
 POSITION_TUPLE_W_H = (200,200)
