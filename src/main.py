@@ -1,127 +1,126 @@
-from tkinter import *
-from tkinter.ttk import Treeview
-
 import cv2 as cv
-import pytesseract
-from pynput import keyboard
+import numpy as np
+from matplotlib import pyplot as plt
+from enum import Enum
+import requests
+from paddleocr import PaddleOCR, draw_ocr
+from unidecode import unidecode
+import pyautogui
+from ppocr.utils.logging import get_logger
+import  time
+import logging
+import re
+from keyboard import press_and_release,press
+import pyperclip as pc
+import win32com.client as win
+import win32gui
+import win32process
+from ahk import AHK
+import gameWatcher as gw
+import DofusDB as ddb
+import utils as ut
 
-from board import Board
+Direction = gw.Direction
 
-global game
-def setup():
-    pytesseract.pytesseract.tesseract_cmd = r'F:\Tesseract-OCR\tesseract.exe'
-    board = [cv.imread('../img/board.png', cv.COLOR_RGB2BGR),cv.imread('../img/LittleSizeBoard.png', cv.COLOR_RGB2BGR),cv.imread('../img/1HintBoard.png', cv.COLOR_RGB2BGR),cv.imread('../img/5HintBoard.png', cv.COLOR_RGB2BGR),cv.imread('../img/2Hint.png', cv.COLOR_RGB2BGR),cv.imread('../img/3Hint.png', cv.COLOR_RGB2BGR)]
-    return board
+ahk = AHK()
 
-def init_board():
-    global board
-    arrow = [cv.imread('../img/UP.png', cv.COLOR_RGB2BGR),cv.imread('../img/ArrowRight.png', cv.COLOR_RGB2BGR),cv.imread('../img/ArrowDown.png', cv.COLOR_RGB2BGR),cv.imread('../img/ArrowLeft.png', cv.COLOR_RGB2BGR),cv.imread('../img/UNKOWN.png', cv.COLOR_RGB2BGR)]
-    board = Board(board_sprite, arrow,tableau)
-    ##board.printMyState()
-    print(board.lastHintKnown())
+def comparePos(pos1,pos2):
+    return abs(pos1[0]-pos2[0])+abs(pos1[1]-pos2[1])
 
+offset = 5
 
+starttime = time.monotonic()
+step =None
+pos = None
+hintFound = 0
 
-board_sprite = setup()
-while 1:
-    break
-root = Tk()
-root.geometry('1000x600')
+while True:
+    time.sleep(1)
+    try:    
+        way,hint,nstep,hintimage,origin = gw.findBoard()
+        start = gw.find_pos(origin)
+        if start is None:
+            continue
+        if step is None:
+            print("start")
+    except Exception as e:
+        continue
+    if step == nstep:
+        if start == pos:
+            gw.clicNextStep()
+            hintFound+=1
+            print(f'${step}/${len(way)}')
+            if step == len(way):
+                gw.clickValider()
+                hintfound = 0
+                step = 0
+            # cv.imshow("cropped", hintimage[step-1])
+            # cv.waitKey(0)
+        continue
+    try:
+        print(hint)
+        print(way)
+        print(step)
+        stepnumber = len(way)
+        print(f'start ${start}, hint ${hint} way ${way} step ${step} step number ${len(way)}')
+        # print(origin,start)
+        if nstep == 1: 
+            isInHavreSac = start[0]==0 and start[1]==0
+            if comparePos(origin,start) < 20 and not isInHavreSac :
+                start = origin
+                # ahk.click(x=1000,y=600)
+            else:
+                print('troplouin')
+                continue
+        step = nstep
+        if hint[step-1] == '?':
+            print('wtf')
+        # if hint[step-1]:
+        pos = ddb.get_hints(direction=way[step-1],position_x=start[0],position_y=start[1],hint=hint[step-1])
+        hintm = ut.trouver_chaine_proche(hint[step-1])
+        if pos is None and 'Phorreur' in hintm:
+            print(way[step-1])
+            to_go = None
+            if way[step-1] == Direction.UP:
+                to_go = (start[0],start[1]-10)
+            if way[step-1] == Direction.DOWN:
+                to_go = (start[0],start[1]+10)
+            if way[step-1] == Direction.RIGHT:
+                to_go = (start[0]+10,start[1])
+            if way[step-1] == Direction.LEFT:
+                to_go = (start[0]-10,start[1])
+            gw.travelToPos(to_go)
+            press_and_release('esc') # hold down the shift key
+            time.sleep(0.1 - ((time.monotonic() - starttime) % 0.1))
 
+            press_and_release('esc')
+            pyautogui.click(x=95,y=15)  
+            pyautogui.click(x=95,y=15)  
+            ahk.key_down('z')
 
+             # hold down the shift key
+            while True:
+                time.sleep(1)
 
-b = Button(root,text="Zango",command=init_board)
+                if gw.isThereAPhorreur():
+                    ahk.click(x=1000,y=600)
+                    time.sleep(0.2- ((time.monotonic() - starttime) % 0.2))
+                    gw.clicNextStep()
+                    # time.sleep(0.5 - ((time.monotonic() - starttime) % 0.5))
+                    hintFound+=1
+                    if step == len(way):
+                        gw.clickValider()
+                        hintfound = 0
+                        step = 0
+                    break
 
+        # if pos is None:
+        #     print(hint)
+        #     start = (-start[0],start[1])
+        #     pos = ddb.get_hints(direction=way[step-1],position_x=start[0],position_y=start[1],hint=hint[step-1])
+        #     lastPos =start
+        if pos:
+            gw.travelToPos(pos)
 
-def change_pos():
-    global board
-    if X.get()!= '' and Y.get()!= '':
-        try:
-            x = int(X.get())
-            y = int(Y.get())
-            board.pos_list[-1] =(x,y)
-            X2.delete(0, END)
-            Y2.delete(0, END)
-        except Exception:
-            print("Wrong pos")
-            return
-
-
-def getpos():
-    global board
-    pos=board.old_find_pos()
-    X.set(pos[0])
-    Y.set(pos[1])
-
-
-c = Button(root,text="POS",command=getpos)
-c.pack(side=RIGHT)
-
-
-def setpos():
-        global board
-        try:
-            x = int(X.get())
-            y = int(Y.get())
-            board.pos = (x,y)
-            X2.delete(0, END)
-            Y2.delete(0, END)
-        except Exception:
-            print("Wrong pos")
-            return
-
-
-d = Button(root,text="BROKEN",command=setpos)
-d.pack(side=LEFT)
-
-def next_step():
-    global board
-    if X.get()!= '' and Y.get()!= '':
-            x = int(X.get())
-            y = int(Y.get())
-            board.next_step(x, y)
-            X2.delete(0, END)
-            Y2.delete(0, END)
-    else:
-        board.next_step()
-    X2.delete(0, END)
-    Y2.delete(0, END)
-a = Button(root,text="Next",command=next_step)
-a.pack()
-b.pack(side=BOTTOM)
-X = StringVar()
-Y = StringVar()
-X1 = Label(root, text="X")
-X1.pack( side = LEFT)
-X2 = Entry(root, bd =5,textvariable=X)
-X2.pack(side = LEFT)
-
-
-Y1 = Label(root, text="Y")
-Y1.pack( side = LEFT)
-Y2 = Entry(root, bd =5,textvariable=Y)
-Y2.pack(side = LEFT)
-
-tableau = Treeview(root, columns=('Indice', 'Position','Direction'))
-
-tableau.heading('Indice', text='Indice')
-
-tableau.heading('Position', text='Position')
-
-tableau.heading('Direction', text='Direction')
-
-tableau['show'] = 'headings' # sans ceci, il y avait une colonne vide à gauche qui a pour rôle d'afficher le paramètre "text" qui peut être spécifié lors du insert
-
-tableau.pack(padx = 10, pady = (0, 10))
-
-
-def on_key_release(key):
-    if str(key) == "Key.page_up":
-        ##try:
-            next_step()
-        ##except Exception as e:
-            ##print(e)
-
-with keyboard.Listener(on_release = on_key_release) as listener:
-    root.mainloop()
-    listener.join()
+    except Exception as e:
+        continue

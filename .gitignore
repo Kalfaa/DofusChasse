@@ -1,0 +1,10 @@
+build
+__venv
+node_modules
+dist
+projectName
+Lib
+__pycache__
+output
+nodedfc
+v1
