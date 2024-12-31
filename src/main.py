@@ -6,7 +6,7 @@ import requests
 from paddleocr import PaddleOCR, draw_ocr
 from unidecode import unidecode
 import pyautogui
-from ppocr.utils.logging import get_logger
+from ppocr.utils.logging import get_logger # type: ignore
 import  time
 import logging
 import re
@@ -39,6 +39,7 @@ while True:
     try:    
         way,hint,nstep,hintimage,origin = gw.findBoard()
         start = gw.find_pos(origin)
+        # print(start)
         if start is None:
             continue
         if step is None:
@@ -78,6 +79,7 @@ while True:
         # if hint[step-1]:
         pos = ddb.get_hints(direction=way[step-1],position_x=start[0],position_y=start[1],hint=hint[step-1])
         hintm = ut.trouver_chaine_proche(hint[step-1])
+        print('go to',pos)
         if pos is None and 'Phorreur' in hintm:
             print(way[step-1])
             to_go = None
@@ -113,12 +115,6 @@ while True:
                         hintfound = 0
                         step = 0
                     break
-
-        # if pos is None:
-        #     print(hint)
-        #     start = (-start[0],start[1])
-        #     pos = ddb.get_hints(direction=way[step-1],position_x=start[0],position_y=start[1],hint=hint[step-1])
-        #     lastPos =start
         if pos:
             gw.travelToPos(pos)
 

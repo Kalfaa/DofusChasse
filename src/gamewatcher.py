@@ -9,7 +9,7 @@ import time
 import pyperclip as pc
 from ahk import AHK
 from keyboard import press_and_release,press
-from ppocr.utils.logging import get_logger
+from ppocr.utils.logging import get_logger # type: ignore
 import logging
 
 logger = get_logger()
@@ -44,8 +44,8 @@ class Direction(Enum):
 
 def clickValider():
     img_s = np.array(pyautogui.screenshot())
+    # img_s = cv.resize(img_s ,(1920,1080))
     gray = cv.cvtColor(img_s , cv.COLOR_BGR2GRAY)
-    img_s = cv.resize(gray ,(1920,1080))
     p = findMultipleTemplate(gray,butvalid,False)
 
     pyautogui.moveTo(p[0]['pt']+15,p[0]['pt1']+5, 0.2)
@@ -54,6 +54,7 @@ def clickValider():
     
 def clicNextStep():
     img_s = np.array(pyautogui.screenshot())
+    # img_s = cv.resize(img_s ,(1920,1080))
     gray = cv.cvtColor(img_s , cv.COLOR_BGR2GRAY)
     p = findMultipleTemplate(gray,encour,False)
     filtered = []
@@ -69,12 +70,6 @@ def clicNextStep():
     pyautogui.moveTo(1000,500, 0.2)
 
 def find_arrow(image):
-        # image = cv.copyMakeBorder(image, 20, 20, 20, 20, cv.BORDER_CONSTANT, value=[0, 0, 0])
-        # image = cv.threshold(image, 0, 255,cv.THRESH_BINARY | cv.THRESH_OTSU)[1]
-        # image = cv.bitwise_not(image)
-        # print('arrow')
-        # cv.imshow("cropped", image)
-        # cv.waitKey(0)
         height, width = image.shape[:2]
         try:
             resultUp = cv.matchTemplate(image, AUp, cv.TM_CCOEFF_NORMED)
@@ -102,20 +97,8 @@ def find_arrow(image):
         except Exception:
             max_valLeft = 0
 
-        # resultRight = cv.matchTemplate(image, Aright, cv.TM_CCOEFF_NORMED)
-        # resultDown = cv.matchTemplate(image, ADown, cv.TM_CCOEFF_NORMED)
-        # resultLeft = cv.matchTemplate(image, Aleft, cv.TM_CCOEFF_NORMED)
-
-        # min_valRight, max_valRight, min_locRight, max_locRight = cv.minMaxLoc(resultRight)
-        # min_valDown, max_valDown, min_locDown, max_locDown = cv.minMaxLoc(resultDown)
-        # min_valLeft, max_valLeft, min_locLeft, max_locLeft = cv.minMaxLoc(resultLeft)
         if max(max_valDown,max_valUp,max_valRight,max_valLeft) == 0:
             print('noarrow found')
-        ##print("UP" +str(max_valUp))
-        ##print("Down" + str(max_valDown))
-        ##print("Right" + str(max_valRight))
-        ##print("Left" + str(max_valLeft))
-        ##print("Unkown" + str(max_valUNKNOWN))
 
         if max_valUp > max_valRight and max_valUp > max_valDown and max_valUp > max_valLeft:
             return Direction.UP
@@ -280,18 +263,19 @@ def travelToPos(pos:typing.Tuple[int,int]):
 
 def isThereAPhorreur()->bool: 
         img_s = np.array(pyautogui.screenshot())
+        # img_s = cv.resize(img_s ,(1920,1080))
         gray = cv.cvtColor(img_s , cv.COLOR_BGR2GRAY)
-        img_s = cv.resize(gray ,(1920,1080))
-        res = findMultipleTemplate(img_s,phorreur,False,0.7)
+        res = findMultipleTemplate(gray,phorreur,False,0.7)
         return len(res)>0
 
 POS_PATTERN = r'(-?\d{1,2})\s*(.|,|;|:)\s*(-?\d{1,2})'
 
 def find_pos(origin,lastPos=None):
     img_s = np.array(pyautogui.screenshot(region=(0,70,100,50)))
+    # img_s = cv.resize(img_s ,(1920,1080))
 
     gray = cv.cvtColor(img_s , cv.COLOR_BGR2GRAY)
-    find_minus_x = len(findMultipleTemplate(gray[0:40,0:40],minus))
+    find_minus_x = len(findMultipleTemplate(gray[0:30,0:20],minus))
     results = ocr.ocr(gray, det=True, cls=False, rec=True)
     if results[0] is None:
         return None
@@ -312,6 +296,7 @@ def find_pos(origin,lastPos=None):
                     # print(y)
                     y = -y
             if x > 0 and find_minus_x:
+                # print('abrakadabra')
                 x = -x
             return x, y
     return None
