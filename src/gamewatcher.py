@@ -7,7 +7,6 @@ import numpy as np
 import typing
 import time
 import pyperclip as pc
-from ahk import AHK
 from keyboard import press_and_release,press
 from ppocr.utils.logging import get_logger # type: ignore
 import logging

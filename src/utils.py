@@ -1,7 +1,5 @@
 import difflib
 
-
-
 indices = [
     "Affiche de carte au trésor",
     "Aiguille à coudre",
