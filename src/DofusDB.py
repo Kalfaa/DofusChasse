@@ -9,7 +9,7 @@ class Direction(Enum):
     RIGHT=0
     UP=6
     DOWN=2
-
+default_token = '03AFcWeA6iVVcyc97jIGreGqubFfVWwHGzGEbmnn1wD4bA0zWqDcWqeOdcXz-xBdKdAfqqp344LH1iGtWKHeBdraOpPKLNvTdYzyyGIHACYVEhzbyu-A6k77_ws-a2n45Rw4tLTHTiIdrcwGC2Gd5y0Mtg93rvx7DSA5UbO1Ll0z3MtlULHjHSiMlcgfS08bW7ivPOLU7yW__9zPnAQqPtzPhLvoijQcyTVU-hJw255AhP4p9RlZvMV2gBCQkYG3Hm3qwNtd8_oj4ufP4Ts4oSppFuAcH0M_PhP1Jkh1uigAfD1lNm4Zb7FCpyPLQLg72RfHwZFJvwxjtAWZjcIG1JcQEJora3xIv-OPsJiSstkiHbA-AKPhrSS8JOH5ApTss5SM08hGhgK4HFOIkr9TSs0KZ8ecMVvUNHnYwH4Se3SJhmfGZUN2voTlu1ejq61JAaIgoZilWhSWQ0N9KwSQ6KAG6Nu4_l0_kMHZAAm53lfLbqJ-V-RIA8ejbyRr_D47Q8oK9iCDfbqn6VTyEb3zBg5YH-pn7KfixGh3Ul2qbSHK52E62pc548seP2wvCZCj6B4_C9wwA_0Sgp5hnTLGArxIWySlXSF9J-4nKfwsmvEN67ebhsBYapUdxPRwvZ1dVSjK6AFPCBbV5BPbR-KItWtwMh177-CnEefN6lcT9Ssdsr7g_Dr--04e9fQF5WqymLEOFPbf9Q9V2-7EWpSQFjdrE8UpCO43qpthw1j4oc9JdfWuOaYVB5UxLg2rOHz7Jll3huJRJlkUfZ8X_VkjXqRAlHO_jcCg-2jKD3tmPZ6KANDMW94nHK1vuU5hFtIbMsGV3qrLPLKPBOmJo_JfGGgGItNEw1P5CPdR3uI0rqnXDIdzI79g3xX8xKDfz4df3IKmzAWTXnTzIspDFz4eeCpNJJd2-lzAAqNGqPtCLV5yxOR2FQcbc-fRwHZ_nZIes4cZfEaexeXg-J3TypwkPZZd-yi6ENxa6to1V9duCVTgTHZL1kTOP_zVYZm0J1J8By68Hbtm86EPvFBdMGgWQnRKAD2qYNqkuxSx1YcfY_-Nl7dBb1OSqvnqWKjMVxk8E2wlFSkWlNj0wQdhUXsEOjbjWr2xmNkKxv_FuDJdvCjVIdRcbHq2p1yfXxfH-N-oCala3rCoskzbJCF7eMEdXGRXijevZ_qPLiVnZlkWjVUIOdvITcEB9dwUvckeolpBbekua4QmPdwVoNqg4bihbyA8avh82jCOhathqUSZPw1CKIU5wlVp4XHIV0ymHYd_vRR59AXnHUaErGc9tiytB51nvZ1eDTi1gbix1hf4CsB6jezeZ87OI5esA6bBY_X96I-dn_FGjprmUyXFNm11aJvo7cbArbFFkyXkcCD0i7mINQr7ocEFrzRYSMLbkN8kSEnqjXaj6hipR5p_aZ2QK5capGYkyIEzCFRTad0nLEAuFWcYQ2tdIggoptJvI271YX31leOh4g2vuYOu5TPzK-1X5c-xUQRFMhRe_Wvm29XrtWC2iW4NCoidvCEr6VhcXSU537qh9Xcx4VBIz_8YY63qkUFOYx_Z0cLyzjHU0OQjXbQXR5_DdkwFcAmw1Q5-NZNgxHM2gWjHtVQFTyz77PpHtd5sI5RGNGH04BktM9X7sQo6BPsS5v68nP-741G4ZxrMEWkvIgosOEP4HLwfq61hWaAN973YJiEwuD_0xPmHcmn-BYyJu0F9RpCXIuMwmtrJyxFBO4zZNmI_AG1CSgpFPNFmgz3-HQXWV0Cs69TyZUzoqCJbRySBdw08_fR3zOHCAJzeAOkOLGf8GsWqn9b9Fc1pIFCA9mxbMtoa60zIv9e9A2KOGiA5VORDO4433oo0LdBBLYYaL0nQA8Rp7B08XDVNT5lJlzMHNoQgkhuyw6XrWiEcm9e28UFFYUkaj8PYFJB9bgbMusSLn1rMBIqDqPwSFwk9Eb-MiStWeFvJOUwyYXFo7iqHBU9QWTDbDbJZj98xuHByKhVa6l_cfRskx-kKnAZ-yyhzJTL7Mm81lIBp-ZpnEcjUNLgaJR_XVPFlGoh7talZM3r7KWT0QHXp4lW8JqZn8cuw1T20ESr1Kpccel4l1aEwTcmzYx1XGfxVnOTXEaeFo3K_cxAnpuB8UeJnLN7S2Fm0Er3tv2jYiQfofTDOCWz5IE3eKAd6kUr_6AXFZFd_5p'
 dict = {"Carapace de tort":"Carapace de tortue","Gravure d'ceil":"Gravure d'œil","Rocher taillé en aretes de poissor":"Rocher taillé en arètes de poisson"}
 
 def comparePos(pos1,pos2):
@@ -20,14 +20,16 @@ def formatIndice(hint):
         return dict[hint]
     return hint
 
-def get_hints(direction: Direction, position_x: int, position_y: int, hint: str):
+def get_hints(direction: Direction, position_x: int, position_y: int, hint: str, token: str = default_token):
+    print("bonjour")
     hint = formatIndice(hint.strip())
+    print("token", token.get())
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0',
         'Accept': 'application/json, text/plain, */*',
         'Accept-Language': 'fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3',
         # 'Accept-Encoding': 'gzip, deflate, br, zstd',
-        'token': '03AFcWeA77RZph1i-lpIZ-P_RSnL9X1zNlV6im_lUVQkP_lD6ipwVm8K07U0s7dniDJQCSilaM11ITkwknT-A2aVFlY3IuXUWxoAGFED4IXmM897xo5pr7mfa0QwXGzvkNKe4z32NB4cknYBXQCYTFs9eY5wGhuF47say38y3Exc_sxD4pGBI5HhTH0US-Afn_ZyEtSCbihms6AfaLbmN4wxVAHIHpmqgQK59o4emA5XFZFXQ3a7LP5JFmSi6CBC4o3wYWliT6JkWnI2DpgcvYL3nZYlbnr3Hb_XZWYefqGrH7FKmqnSBFeQ0Gabn2XHxoJKocnuAnfH5GJyrxWNaYTBYPWJeFJfUiFU1lBK70t8qJzNywIBomvy58fFX7641lpZwX7bOk1G4NZ2I785TGw1XgZFSXOoCZZjYLqHoN7lSC87QWXok8ftvMZZc9UvMMDvQs0gpZeOmIq286RXPz4LlFL6G_hZC5cfm2sHAohq1SNsjGTj7vh0k-PzOh90QQ0sOaiGrCvdCcFiT70Va93oZY8TKRtH-26ZVu6OBhdFKT6KLTUPH67qD0pSUsr4KU0zEGMUuKMPo1OEnlXaiC9sBUFosrkgYfLZJKjCF2LBTEEl8Hd-IqtzSVmYXrUgIAzrcOAZag5VUJbQQ7R_EAScWn2VYxBSRr22LI6AyBFcNZR5MGM7mkeqfZ7o4PwxDHigtxQo6WIGTCxwkenS-hhqtxQPiWGUm3CRBOIM7ms7-n5eGg4ms4KAEejRZ97W0JZTSfnrIsk972EGTMnO8NBDapOlhBQdoNP-ebBAdCBuG-md3VE_NP7zAZ9MTCfd7FfuKg-4WEzQfsgql45TTyqcKQ9sKDUurGIZbcVc6hD5oRQhtLYCzwX9nFE8I6rERhO9f6hId-Bm_tw9CCaaGM1kDuWSZv2QLObLmsLoUZEZrDe04dv7MINSS9TsJi0ZFbmH60ZdUMggllbFhsAjqc6Pmo_4hMXO1U3FKgOBM00Op4I2TkRCIC52Ysi7h042OYifaAgW8W9bav04OUuY-dxivzKSH0whYHgzncKCnugluwb4Zw-5PsrU4mcalCov84SMNXu8yhnDWzrSGLrvB-atpDLQY1t9O6CBZZFz4YzqcSWggKtZnCnG_ydY2LOjMDfovkr14aPQtS9jhuD56Gyju9Wu5U49WcGIZj_mDFb3m-0HDvnR_pUdZd_wWW6DKQf0wnBdko_jfBrAhSaEdxFS1zztPobGLizlgSE3iyo0csqEO886oM5SVUlB4vHv5BksnqYWcyF_kwwS4teuWl80jkYR_R1oLhq3_B4JBgujksw3GJWbt24G9WB5v94emRf3PKt21BM0W5pyI0IlomoLZU7wBKRy3djaWiWHcz7Gj9X1tthGiSy9ohQRQKmh_jfNY_7lg-6MTpblVMlMPKBnMJ-8C_WDQzMFXXyJLYSRx16gxb9VS3AEwoC2Z2w94nU5gNnr-cDC7FPFvT9FG6GZUfhTZN2unAK3cOwRcFb3scdYA9lD1yQnSmfDUeDVzuaGhSp_HH41-_cM8S8mbcKx08W-bliLmTw9aFMuKEpnQO0Ssd49xBVCh2GoSfdgx3094DXvI3nbhGtf-2MhyxFbvJhjr1TNzrcxkeaVlb7dRYeIVxFR1cphpFtVB363-jtAQ4FZZrVROsGxweC8rQmPpayw1spORaLr5Fsg-H9XGN7of2SvrI8lGaL3H-h0LfrXdJaUdg4ok5hxZ9WiY5dilN1_uENS26m5ptwVjfl7LCUNcjWdpTe41ybJmLr2flvU4V7QDoX_gXzxQrWK2WAwL1EV2l4WkE8-klPX0mD_1M681giRYFB0TnoCe8pqqt6ax3NOuFHlOIwCK-hhCKuBtMpXdAr0-pqEGcp6Z-_ghG8IjF9Bo06rVw9-W8lZnVXBNQ2lFgbeLuZIP1xA3rgYK8CEwAh8W2c5ZIExOS61FMDkWFIPlFWQYWkioapq0aoFaYEEGXFJ4xdAkyJx51MCC-GvvD50Um8xux9IMKjlbdFihzhEws3-7kMoPAfBlsH2pShAgsA22mhsfyQtq2oepb1Rdz3A9AjF9z1vXade6405BVZuS5RiQi7LqRZtHbtJwwntjVsv7Lk_xUASiqGC0zmsIEMgpgLvIvLyqMBfWcO8tWYMVGyeMAsGe5X-JwvDSXno0LL0Rk',
+        'token': token.get(),
         'Origin': 'https://dofusdb.fr',
         'Connection': 'keep-alive',
         'Referer': 'https://dofusdb.fr/',
@@ -51,6 +53,7 @@ def get_hints(direction: Direction, position_x: int, position_y: int, hint: str)
     # print(hint)
     print(direction,position_x,position_y,hint)
     req = requests.get(f"https://api.dofusdb.fr/treasure-hunt?x={position_x}&y={position_y}&direction={direction.value}&$limit=50&lang=fr", headers=headers).json()
+    print("just did the call")
     # print(req)
     if 'data' not in req:
         return None
